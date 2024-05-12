@@ -1,0 +1,167 @@
+.graph {
+  position: relative;
+  z-index: 1;
+  user-select: none;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--c-background-1);
+  background-image: url('@/assets/images/graph-grid.svg');
+  outline: none;
+
+  .graph-content {
+    transform-origin: 0 0;
+  }
+
+  .graph-coord-debug {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    background: #F2B505;
+    border-radius: 4px;
+    z-index: 9999;
+  }
+
+  .graph-box-selection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    z-index: 9999;
+    border: 2px dashed fade-out(cyan, 0.2);
+    background: fade-out(cyan, 0.95);
+    pointer-events: none;
+  }
+
+  .graph-node {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .node {
+      overflow: hidden;
+      border-radius: 6px;
+      font-family: 'Reddit Mono', monospace;
+      font-size: 16px;
+      backdrop-filter: blur(2px);
+      background: fade-out(#0A0A0A, 0.5);
+      border: 2px solid fade-out(#0A0A0A, 1);
+      box-shadow: 0 2px 4px 0 fade-out(black, 0.7);
+      transition: border 100ms, box-shadow 100ms;
+
+      &.type--variable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 40px;
+        border-radius: 20px;
+      }
+
+      &.type--execution {
+        .node-header {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 5px 10px;
+          color: white;
+          background: linear-gradient(to right, #39576C, #111);
+          border-radius: 4px 4px 0 0;
+
+          .mi {
+            font-size: 20px;
+          }
+        }
+
+        .node-body {
+          display: flex;
+          justify-content: space-between;
+          gap: 40px;
+          padding: 20px 15px;
+          white-space: nowrap;
+
+          .node-pins {
+            display: flex;
+            flex-flow: column;
+            gap: 20px;
+
+            &--right {
+              align-items: flex-end;
+            }
+          }
+        }
+
+        &--function .node-header {
+          background: linear-gradient(to right, #39576C, #111);
+        }
+
+        &--branch .node-header {
+          background: linear-gradient(to right, #696969, #111);
+        }
+      }
+    }
+
+    &.is-selected .node {
+      border-color: #F2B505;
+
+      // TODO: Move to "is moving" state.
+      box-shadow: 0 5px 15px -5px fade-out(black, 0.3);
+      cursor: grabbing;
+    }
+
+    .pin {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      button {
+        width: 14px;
+        height: 12px;
+        border: none;
+        background: none;
+        padding: 0;
+      }
+
+      &--exec {
+        button {
+          background: white;
+          clip-path: polygon(0 0, 50% 0, 100% 50%, 50% 100%, 0 100%);
+        }
+      }
+
+      &--var {
+        button {
+          content: '';
+          display: block;
+          border-radius: 6px;
+          border: 2px solid;
+        }
+
+        &-string button {
+          border-color: #FF00D4;
+        }
+
+        &-boolean button {
+          border-color: #950000;
+        }
+
+        &-int button {
+          border-color: #1FE3AF;
+        }
+
+        &-object button {
+          border-color: #0059CB;
+        }
+      }
+
+      .pin-text {
+        font-size: 12px;
+        line-height: 12px;
+        height: 12px;
+      }
+    }
+  }
+}
